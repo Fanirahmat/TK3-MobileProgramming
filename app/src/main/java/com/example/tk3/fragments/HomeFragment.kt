@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import com.example.tk3.R
 import com.example.tk3.data.AppDatabase
 import com.example.tk3.data.entity.MyNumber
@@ -15,11 +17,15 @@ import com.example.tk3.data.entity.MyNumber
 
 class HomeFragment : Fragment() {
 
-    private lateinit var btnSave: Button
-    private lateinit var editText:EditText
+//    private lateinit var btnSave: Button
+    private lateinit var saveButton: Button
+//    private lateinit var editText:EditText
+    private lateinit var resultText: TextView
     private lateinit var database: AppDatabase
 
     private lateinit var myContext: Context
+
+    private var currentNumber: StringBuilder = StringBuilder()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,21 +39,57 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btnSave = view.findViewById(R.id.button)
-        editText = view.findViewById(R.id.editText)
+//        btnSave = view.findViewById(R.id.button)
+        saveButton = view.findViewById(R.id.buttonSave)
+//        editText = view.findViewById(R.id.editText)
+        resultText = view.findViewById(R.id.textViewResult)
         database = AppDatabase.getInstance(myContext)
 
-        btnSave.setOnClickListener {
-            val textNumber = editText.text.toString()
+//        btnSave.setOnClickListener {
+//            val textNumber = editText.text.toString()
+//
+//            if (textNumber.isNotEmpty()) {
+//                database.numberDao().insertAll(
+//                    MyNumber(null, textNumber.toInt())
+//                )
+//
+//            }
+//            // Clear the input fields
+//            editText.text.clear()
+//        }
 
-            if (textNumber.isNotEmpty()) {
-                database.numberDao().insertAll(
-                    MyNumber(null, textNumber.toInt())
-                )
+        val numberButtons: List<Button> = listOf(
+            view.findViewById(R.id.zero),
+            view.findViewById(R.id.one),
+            view.findViewById(R.id.two),
+            view.findViewById(R.id.three),
+            view.findViewById(R.id.four),
+            view.findViewById(R.id.five),
+            view.findViewById(R.id.six),
+            view.findViewById(R.id.seven),
+            view.findViewById(R.id.eight),
+            view.findViewById(R.id.nine)
+        )
 
+        for (button in numberButtons) {
+            button.setOnClickListener {
+                val digit = button.text.toString()
+                currentNumber.append(digit)
+                resultText.text = currentNumber.toString()
             }
-            // Clear the input fields
-            editText.text.clear()
+        }
+
+        saveButton.setOnClickListener {
+            val number = resultText.text.toString()
+
+            if (number.isNotEmpty()) {
+                database.numberDao().insertAll(
+                    MyNumber(null, number.toInt())
+                )
+            }
+            currentNumber.clear()
+            resultText.text = currentNumber.toString()
+            Toast.makeText(requireContext(), "Angka Tersimpan", Toast.LENGTH_SHORT).show()
         }
     }
 
