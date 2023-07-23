@@ -17,9 +17,7 @@ import com.example.tk3.data.entity.MyNumber
 
 class HomeFragment : Fragment() {
 
-//    private lateinit var btnSave: Button
     private lateinit var saveButton: Button
-//    private lateinit var editText:EditText
     private lateinit var resultText: TextView
     private lateinit var database: AppDatabase
 
@@ -39,24 +37,9 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        btnSave = view.findViewById(R.id.button)
         saveButton = view.findViewById(R.id.buttonSave)
-//        editText = view.findViewById(R.id.editText)
         resultText = view.findViewById(R.id.textViewResult)
         database = AppDatabase.getInstance(myContext)
-
-//        btnSave.setOnClickListener {
-//            val textNumber = editText.text.toString()
-//
-//            if (textNumber.isNotEmpty()) {
-//                database.numberDao().insertAll(
-//                    MyNumber(null, textNumber.toInt())
-//                )
-//
-//            }
-//            // Clear the input fields
-//            editText.text.clear()
-//        }
 
         val numberButtons: List<Button> = listOf(
             view.findViewById(R.id.zero),
